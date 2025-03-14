@@ -1,0 +1,75 @@
+body {
+    background: #f8f9fa;
+    color: black;
+    font-family: 'Poppins', sans-serif;
+}
+
+.theme-dark {
+    background: #1a1a1a;
+    color: white;
+}
+
+.card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+}
+
+.chart-container {
+    width: 250px;
+    height: 250px;
+    position: relative;
+    margin: auto;
+}
+
+.chart-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.chart-title {
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+
+.btn-toggle {
+    background: #00ff00;
+    color: black;
+    border-radius: 20px;
+    padding: 7px 20px;
+    transition: 0.3s;
+}
+
+.btn-toggle:hover {
+    background: #009900;
+}
+
+/* Header CSS */
+.main{
+    display: flex;
+    justify-content: space-around;
+    padding: 30px;
+    background-color: rgba(183, 173, 230, 0.479);
+}
+
+.main>div{
+    font-size: 30px;
+}
