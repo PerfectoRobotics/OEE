@@ -5,15 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfecto - OEE Dashboard</title>
+    
+    <!-- Bootstrap & Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.1.0/progressbar.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="/static/styles.css" class="css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
 <body>
+    <!-- Navbar -->
     <nav class="navbar navbar-dark p-3">
         <div class="container d-flex justify-content-between">
             <div>
@@ -26,31 +32,33 @@
                 <span class="theme-toggle text-white ms-3" onclick="toggleTheme()">
                     <i id="themeIcon" class="fas fa-moon"></i>
                 </span>
-                <!-- <div id="mstatus-id" style="color: white;">Mode Loading..</div> -->
             </div>
-
         </div>
     </nav>
+
+    <!-- Batch Name -->
+    <div class="section-sub-title">
+        <span class="sub-title">Batch Name:</span> <span class="sub-title"> DummyBatch </span>
+    </div>
+
+    <!-- Live Production -->
     <div class="live-production">
-        <div class="section">
-            <i class="bi bi-calculator-fill prod"></i>
-            <p class="prod">Total Count <span class="prod" id="total">27</span></p>
+        <div class="section"><i class="bi bi-calculator-fill prod"></i>
+            <p class="prod">Total Count <span class="prod" id="total">0</span></p>
         </div>
-        <div class="section">
-            <i class="bi bi-check-circle-fill"></i>
-            <p class="prod">Produced <span class="prod" id="produced">8</span></p>
+        <div class="section"><i class="bi bi-check-circle-fill"></i>
+            <p class="prod">Produced <span class="prod" id="produced">0</span></p>
         </div>
-        <div class="section">
-            <i class="bi bi-gear-fill"></i>
-            <p class="prod">In-Progress <span class="prod" id="progress">15</span></p>
+        <div class="section"><i class="bi bi-gear-fill"></i>
+            <p class="prod">In-Progress <span class="prod" id="progress">0</span></p>
         </div>
-        <div class="section">
-            <i class="bi bi-x-circle-fill"></i>
-            <p class="prod">Rejected/Quarantine<span class="prod" id="rejctorquar">4</span></p>
+        <div class="section"><i class="bi bi-x-circle-fill"></i>
+            <p class="prod">Rejected/Quarantine <span class="prod" id="rejctorquar">0</span></p>
         </div>
     </div>
+
+    <!-- OEE Progress Circles -->
     <div class="container mt-4">
-        <!-- <h4 class="heading-3">Line OEE</h4> -->
         <div class="row text-center">
             <div class="col-md-3">
                 <div class="card p-4">
@@ -98,148 +106,44 @@
             </div>
         </div>
     </div>
-    <!-- <div class="container mt-4">
-        <h5 class="text-center">OEE Trend</h5>
-        <div style="width: 800px; height: 600px; margin: auto;">
-            <canvas id="oeeTrendChart"></canvas>
-        </div>
-    </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <script>
-        const ctx = document.getElementById("oeeTrendChart").getContext("2d");
-    
-        let labels = [];
-        let availabilityData = [];
-        let performanceData = [];
-        let qualityData = [];
-        let oeeData = [];
-    
-        const trendChart = new Chart(ctx, {
-            type: "line",
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        label: "Availability",
-                        borderColor: "#28a745",
-                        backgroundColor: "rgba(40, 167, 69, 0.2)",
-                        data: availabilityData,
-                        fill: true
-                    },
-                    {
-                        label: "Performance",
-                        borderColor: "#ffc107",
-                        backgroundColor: "rgba(255, 193, 7, 0.2)",
-                        data: performanceData,
-                        fill: true
-                    },
-                    {
-                        label: "Quality",
-                        borderColor: "#17a2b8",
-                        backgroundColor: "rgba(23, 162, 184, 0.2)",
-                        data: qualityData,
-                        fill: true
-                    },
-                    {
-                        label: "OEE",
-                        borderColor: "#007bff",
-                        backgroundColor: "rgba(0, 123, 255, 0.2)",
-                        data: oeeData,
-                        fill: true
-                    }
-                ]
-            },
-            options: {
-                responsive: false,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: "Time"
-                        }
-                    },
-                    y: {
-                        min: 0,
-                        max: 100,
-                        title: {
-                            display: true,
-                            text: "Percentage (%)"
-                        }
-                    }
-                }
-            }
-        });
-    
-        function updateTrendChart(data) {
-            let now = new Date().toLocaleTimeString();
-            labels.push(now);
-            availabilityData.push(data.availability);
-            performanceData.push(data.performance);
-            qualityData.push(data.quality);
-            oeeData.push(data.oee);
-    
-            if (labels.length > 20) {
-                labels.shift();
-                availabilityData.shift();
-                performanceData.shift();
-                qualityData.shift();
-                oeeData.shift();
-            }
-    
-            trendChart.update();
-        }
-    
-        function fetchOEEData() {
-            fetch("/get_oee_data")
-                .then(response => response.json())
-                .then(data => {
-                    updateTrendChart(data);
-                })
-                .catch(error => console.error("Error fetching data:", error));
-        }
-    
-        setInterval(fetchOEEData, 5000);
-    </script> -->
 
-    <br>
+    <!-- Stations Status -->
     <div class="station">
-
         <div class="d-flex justify-content-center mt-4">
-            <div id="stationStatus" class="station-card status-offline">
-                <i id="statusIcon" class="fas fa-times-circle status-icon"></i>
-                <p id="statusText">OP10 Offline</p>
+            <div class="station-card status-offline">
+                <i class="fas fa-times-circle status-icon"></i>
+                <p>OP10 Offline</p>
                 <a href="#" class="station-oee-views">View OEE</a>
             </div>
         </div>
         <div class="d-flex justify-content-center mt-4">
-            <div id="stationStatus" class="station-card status-offline">
-                <i id="statusIcon" class="fas fa-times-circle status-icon"></i>
-                <p id="statusText">OP20 Offline</p>
+            <div class="station-card status-offline">
+                <i class="fas fa-times-circle status-icon"></i>
+                <p>OP20 Offline</p>
                 <a href="#" class="station-oee-views">View OEE</a>
             </div>
         </div>
         <div class="d-flex justify-content-center mt-4">
-            <div id="stationStatus" class="station-card status-offline">
-                <i id="statusIcon" class="fas fa-times-circle status-icon"></i>
-                <p id="statusText">OP30A Offline</p>
+            <div class="station-card status-offline">
+                <i class="fas fa-times-circle status-icon"></i>
+                <p>OP30A Offline</p>
                 <a href="#" class="station-oee-views">View OEE</a>
             </div>
         </div>
         <div class="d-flex justify-content-center mt-4">
-            <div id="stationStatus" class="station-card status-offline">
-                <i id="statusIcon" class="fas fa-times-circle status-icon"></i>
-                <p id="statusText">OP30B Offline</p>
+            <div class="station-card status-offline">
+                <i class="fas fa-times-circle status-icon"></i>
+                <p>OP30B Offline</p>
                 <a href="#" class="station-oee-views">View OEE</a>
             </div>
         </div>
     </div>
-    <footer>
-        &copy; 2025 Perfecto Robotics. All Rights Reserved.
-    </footer>
-    <script src="/static/script.js" ></script>
-</body>
 
+    <!-- Footer -->
+    <footer>&copy; 2025 Perfecto Robotics AI. All Rights Reserved.</footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.1.0/progressbar.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
 </html>

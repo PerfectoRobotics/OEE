@@ -4,10 +4,13 @@ function updateStationStatus() {
     let statusIcon = document.getElementById("statusIcon");
 
     let statuses = [
-        { text: "OP10 Online", class: "status-online", icon: "fa-wifi" },
-        { text: "OP10 Offline", class: "status-offline", icon: "fas fa-times-circle status-icon" },
-        { text: "OP10 Maintenance", class: "status-maintenance", icon: "fa-tools" },
-        { text: "OP10 Idle", class: "status-idle", icon: "fa-pause-circle" }
+        { text: "OP10 Auto Mode", class: "status-online", icon: "fa-wifi" },
+        { text: "OP10 Manual Mode", class: "status-offline", icon: "fas fa-times-circle status-icon" },
+        { text: "OP10 Faulted", class: "status-maintenance", icon: "fa-tools" },
+        { text: "OP10 Starved", class: "status-idle", icon: "fa-pause-circle" },
+        { text: "OP10 Starved", class: "status-idle", icon: "fa-pause-circle" },
+        { text: "OP10 In-Progress", class: "status-idle", icon: "fa-pause-circle" }
+
     ];
 
     let randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
