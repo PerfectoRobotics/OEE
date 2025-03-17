@@ -1,75 +1,251 @@
 body {
-    background: #f8f9fa;
-    color: black;
     font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: all 0.3s ease-in-out;
 }
 
-.theme-dark {
-    background: #1a1a1a;
-    color: white;
+.navbar {
+    background-color: var(--navbar-bg);
 }
 
 .card {
-    background: white;
     border-radius: 15px;
-    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s, box-shadow 0.3s;
+    padding: 10px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    height: 300px;
+    display: flex;
+    justify-content: center;
 }
 
-.card:hover {
-    transform: scale(1.1);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
-}
-
-.chart-container {
-    width: 250px;
-    height: 250px;
+.progress-container {
     position: relative;
-    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
 }
 
-.chart-text {
+.progress-circle {
+    position: relative;
+    width: 200px;
+    height: 200px;
+}
+
+.progress-text {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 24px;
+    font-size: 1.2rem;
     font-weight: bold;
+    text-align: center;
 }
 
-.chart-title {
-    position: absolute;
-    top: 80%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 18px;
-    font-weight: bold;
+.fw-bold {
+    color: white;
 }
 
+.theme-toggle {
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
 
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: var(--navbar-bg);
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
 
-.btn-toggle {
-    background: #00ff00;
+/* Light Theme */
+:root {
+    --bg-color: #f4f7fc;
+    --text-color: #000;
+    --navbar-bg: #010541;
+    --card-bg: #ffffff;
+    --footer-bg: #01162b;
+}
+
+/* Dark Theme */
+.dark-mode {
+    --bg-color: #121212;
+    --text-color: #ffffff;
+    --navbar-bg: #1c1c1c;
+    --card-bg: #242424;
+    --footer-bg: #1c1c1c;
+}
+
+.logo-img {
+    width: 120px;
+}
+
+.navbar-brand {
+    margin-left: 20px;
+}
+
+.theme-toggle {
+    padding: 8px 18px;
+    background-color: rgba(255, 255, 255, 0.322);
+}
+
+.station-card {
+    width: 250px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+}
+
+.status-online {
+    background-color: #28a745;
+    color: white;
+}
+
+.status-offline {
+    background-color: #dc3545;
+    color: white;
+}
+
+.status-maintenance {
+    background-color: #ffc107;
     color: black;
-    border-radius: 20px;
-    padding: 7px 20px;
-    transition: 0.3s;
 }
 
-.btn-toggle:hover {
-    background: #009900;
+.status-idle {
+    background-color: #6c757d;
+    color: white;
 }
 
-/* Header CSS */
-.main{
+.status-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.station {
     display: flex;
-    justify-content: space-around;
-    padding: 30px;
-    background-color: rgba(183, 173, 230, 0.479);
+    flex-direction: row;
+    justify-content: center;
+    gap: 95px;
+    flex-wrap: wrap;
 }
 
-.main>div{
+.header {
+    position: sticky;
+    top: 0;
+}
+
+.station-oee-views {
+    text-decoration: none;
+    color: #000;
+    background-color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.station-oee-views:hover {
+    opacity: 0.8;
+    transition: 0.5s;
+}
+
+.heading-3 {
+    background-color: #ffffff52;
+    display: inline-block;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.live-production {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.section {
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 10px 20px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    justify-content: center;
+    margin: 10px;
+    height: 110px;
+    width: 225px;
+}
+
+.prod {
+    display: block;
+    font-weight: bold;
+}
+
+.bi-calculator-fill,
+.bi-x-circle-fill,
+.bi-gear-fill,
+.bi-check-circle-fill {
     font-size: 30px;
+    color: #b821fd;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .station {
+        gap: 20px;
+    }
+
+    .station-card {
+        width: 200px;
+    }
+
+    .live-production {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .section {
+        width: 100%;
+    }
+
+    .navbar-brand {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-brand {
+        font-size: 16px;
+    }
+
+    .station-card {
+        width: 180px;
+    }
+
+    .progress-container {
+        height: 120px;
+    }
+
+    .progress-circle {
+        width: 150px;
+        height: 150px;
+    }
+
+    .progress-text {
+        font-size: 1rem;
+    }
 }
