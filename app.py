@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify
 from database import engine  # Import the database engine
-from plcaccess import fetch_plc_data
+from dashread import fetch_plc_data
+
 
 # Initialize Flask app
 app = Flask(__name__)

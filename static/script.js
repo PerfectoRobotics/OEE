@@ -1,28 +1,35 @@
-function updateStationStatus() {
+function updateStationStatus(plcValue) {
     let statusCard = document.getElementById("stationStatus");
     let statusText = document.getElementById("statusText");
     let statusIcon = document.getElementById("statusIcon");
 
+    // Define the status mapping based on PLC values
     let statuses = [
-        { text: "OP10 Auto Mode", class: "status-online", icon: "fa-wifi" },
-        { text: "OP10 Manual Mode", class: "status-offline", icon: "fas fa-times-circle status-icon" },
-        { text: "OP10 Faulted", class: "status-maintenance", icon: "fa-tools" },
-        { text: "OP10 Starved", class: "status-idle", icon: "fa-pause-circle" },
-        { text: "OP10 Starved", class: "status-idle", icon: "fa-pause-circle" },
-        { text: "OP10 In-Progress", class: "status-idle", icon: "fa-pause-circle" }
-
+        { value: 1, text: "OP10 Auto Mode", class: "status-online", icon: "fa-wifi" },
+        { value: 2, text: "OP10 Manual Mode", class: "status-offline", icon: "fa-times-circle" },
+        { value: 3, text: "OP10 Faulted", class: "status-maintenance", icon: "fa-tools" },
+        { value: 4, text: "OP10 Starved", class: "status-idle", icon: "fa-pause-circle" },
+        { value: 5, text: "OP10 In-Progress", class: "status-inprogress", icon: "fa-play-circle" }
     ];
 
-    let randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+    // Find the status based on PLC value
+    let selectedStatus = statuses.find(status => status.value === plcValue);
 
-    // Update UI
-    statusCard.className = `station-card ${randomStatus.class}`;
-    statusText.innerText = randomStatus.text;
-    statusIcon.className = `fas ${randomStatus.icon} status-icon`;
+    if (selectedStatus) {
+        // Update UI if a valid PLC value is passed
+        statusCard.classList.remove(...statusCard.classList);
+        statusCard.classList.add("station-card", selectedStatus.class);
+
+        statusText.innerText = selectedStatus.text;
+        statusIcon.className = `fas ${selectedStatus.icon} status-icon`;
+    } else {
+        console.error("Invalid PLC value");
+    }
 }
 
+
 // Simulate status update every 5 seconds
-setInterval(updateStationStatus, 1000);
+setInterval(updateStationStatus, 5000);
 
 let availabilityBar, performanceBar, qualityBar, oeeBar;
 
@@ -58,62 +65,69 @@ function initializeProgressCircles() {
 
 function fetchOEEData() {
     fetch("/get_oee_data")
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP Error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
-
-            // Online & Offline status
             let plcStatusElement = document.getElementById("plcStatus");
 
-            plcStatusElement.style.backgroundColor = "#ffffff52";
-            plcStatusElement.style.padding = "10px";
-            plcStatusElement.style.borderRadius = "5px";
-            plcStatusElement.style.color = "White";
-            if (data.plc_status) {
-                plcStatusElement.innerHTML = '<i style="font-size: 25px;" class="bi bi-wifi"></i><span> PLC Online</span>';
-            } else {
-                plcStatusElement.innerHTML = '<i style="font-size: 25px;" class="bi bi-wifi-off"></i><span> PLC Offline</span>';
-            }
+            plcStatusElement.style.cssText = `
+                background-color: #ffffff52;
+                padding: 10px;
+                border-radius: 5px;
+                color: white;
+            `;
 
-             //Production data
-            document.getElementById("total").innerText = data.total;
-            document.getElementById("produced").innerText = data.produced;
-            document.getElementById("progress").innerText = data.progress;  
-            document.getElementById("rejctorquar").innerText = data.rejorquar;
+            plcStatusElement.innerHTML = data.plc_status
+                ? '<i style="font-size: 25px;" class="bi bi-wifi"></i><span> PLC Online</span>'
+                : '<i style="font-size: 25px;" class="bi bi-wifi-off"></i><span> PLC Offline</span>';
 
-            updateProgressCircles(data.availability, data.performance, data.quality, data.oee, data.mstat);
+            // Update production data
+            document.getElementById("total").innerText = data.total || "N/A";
+            document.getElementById("produced").innerText = data.produced || "N/A";
+            document.getElementById("progress").innerText = data.progress || "N/A";
+            document.getElementById("rejctorquar").innerText = data.rejorquar || "N/A";
+
+            updateProgressCircles(data.availability, data.performance, data.quality, data.oee);
         })
-        .catch(error => console.error("Error fetching data:", error));
+        .catch(error => {
+            console.error("Error fetching data:", error);
+            document.getElementById("plcStatus").innerHTML = `<span style="color: red;">Error: Unable to fetch data</span>`;
+        });
 }
 
-function updateProgressCircles(avail, perf, qual, oee) {
+function updateProgressCircles(avail = 0, perf = 0, qual = 0, oee = 0) {
     availabilityBar.animate(avail / 100);
     performanceBar.animate(perf / 100);
     qualityBar.animate(qual / 100);
     oeeBar.animate(oee / 100);
 
-    document.getElementById("availabilityText").innerText = avail + "%";
-    document.getElementById("performanceText").innerText = perf + "%";
-    document.getElementById("qualityText").innerText = qual + "%";
-    document.getElementById("oeeText").innerText = oee + "%";
+    document.getElementById("availabilityText").innerText = `${avail}%`;
+    document.getElementById("performanceText").innerText = `${perf}%`;
+    document.getElementById("qualityText").innerText = `${qual}%`;
+    document.getElementById("oeeText").innerText = `${oee}%`;
 }
 
 function toggleTheme() {
-    document.body.classList.toggle("dark-mode");
+    let body = document.body;
     let themeIcon = document.getElementById("themeIcon");
-    if (document.body.classList.contains("dark-mode")) {
-        localStorage.setItem("theme", "dark");
-        themeIcon.classList.replace("fa-moon", "fa-sun");
-    } else {
-        localStorage.setItem("theme", "light");
-        themeIcon.classList.replace("fa-sun", "fa-moon");
-    }
+    let isDark = body.classList.toggle("dark-mode");
+
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+    themeIcon.className = `fa ${isDark ? "fa-sun" : "fa-moon"}`;
 }
 
-if (localStorage.getItem("theme") === "dark") {
-    document.body.classList.add("dark-mode");
-    document.getElementById("themeIcon").classList.replace("fa-moon", "fa-sun");
-}
+// Set theme on page load
+document.addEventListener("DOMContentLoaded", () => {
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-mode");
+        document.getElementById("themeIcon").className = "fa fa-sun";
+    }
+});
 
 initializeProgressCircles();
 fetchOEEData();
-setInterval(fetchOEEData, 1000);
+setInterval(fetchOEEData, 3500);
