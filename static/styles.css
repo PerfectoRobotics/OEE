@@ -51,8 +51,8 @@ body {
 
 .theme-toggle {
     cursor: pointer;
-    font-size: 1.2rem;
-    padding: 5px 10px;
+    font-size: 1rem;
+    padding: 10px;
     border-radius: 5px;
 }
 
@@ -131,6 +131,11 @@ footer {
 .status-icon {
     font-size: 2rem;
     margin-bottom: 10px;
+}
+
+.status-unknown{
+    background-color: #ff5507;
+    color: white;
 }
 
 .station {
@@ -261,7 +266,7 @@ footer {
 }
 
 .sub-title{
-    font-size: 30px;
+    font-size: 20px;
 }
 
 #progress-bar {
@@ -280,7 +285,11 @@ footer {
     background-color: #00ff55;
     transition: width 0.4s ease;
 }
-.main-section{
-    display: flex;
-    flex-direction: column;
+
+.custom-height {
+    height: 40px; /* Change this value as needed */
+}
+
+.custom-width{
+    width: 70px;
 }

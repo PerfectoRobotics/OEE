@@ -61,5 +61,11 @@ def get_oee_data():
     plc_data = fetch_plc_data()  # Fetch data from PLC
     return jsonify(plc_data)
 
+@app.route("/api/plc-data")
+def get_plc_data():
+    data = fetch_plc_data()
+    return jsonify(data)
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

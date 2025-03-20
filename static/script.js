@@ -63,7 +63,7 @@ function fetchOEEData() {
             }
 
             plcStatusElement.innerHTML = data.plc_status
-                ? '<i style="font-size: 25px;" class="bi bi-wifi"></i><span> M/C Online</span>'
+                ? '<i style="font-size: 25px;" class="bi bi-wifi danger"></i><span> M/C Online</span>'
                 : '<i style="font-size: 25px;" class="bi bi-wifi-off"></i><span> M/C Offline</span>';
 
             ["total", "produced", "progress", "rejctorquar"].forEach(id => {
@@ -110,13 +110,13 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("📡 Received PLC Data:", data);
 
             if (!data || Object.keys(data).length === 0) {
-                console.error("❌ No data received for updating station status.");
+                console.error("No data received for updating station status.");
                 return;
             }
 
             updateStationStatus(data);
         } catch (error) {
-            console.error("❌ Error fetching PLC data:", error);
+            console.error("Error fetching PLC data:", error);
         }
     }
 
@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("🔍 Debug: PLC Status Data:", data);
 
         if (!data || typeof data !== "object") {
-            console.error("❌ Invalid or missing data for station status update.");
+            console.error("Invalid or missing data for station status update.");
             return;
         }
 
@@ -136,11 +136,12 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         const statuses = {
-            1: { text: "Auto Mode", class: "status-online", icon: "fa-wifi" },
-            2: { text: "Manual Mode", class: "status-offline", icon: "fa-times-circle" },
-            3: { text: "Faulted", class: "status-maintenance", icon: "fa-tools" },
-            4: { text: "Starved", class: "status-idle", icon: "fa-pause-circle" },
-            5: { text: "In-Progress", class: "status-inprogress", icon: "fa-play-circle" }
+            1: { text: "Auto Mode", class: "status-online", icon: "fa-gear" },
+            2: { text: "Manual Mode", class: "status-maintenance", icon: "fa-tools" },
+            3: { text: "Faulted", class: "status-offline", icon: "fa-times-circle" },
+            4: { text: "Halt", class: "status-idle", icon: "fa-pause-circle" },
+            5: { text: "In-Progress", class: "status-inprogress", icon: "fa-play-circle" },
+            6: { text: "Starved", class: "status-idle", icon: "fa-play-circle" }
         };
 
         for (let key in statusElements) {
@@ -162,13 +163,10 @@ document.addEventListener("DOMContentLoaded", function () {
             statusElements[key].querySelector("p").textContent = `${key.toUpperCase()} ${selectedStatus.text}`;
         }
     }
+    console.log("✅ fetchAndUpdatePLCData() is running...");
 
-    setInterval(fetchAndUpdatePLCData, 3000);
+    setInterval(fetchAndUpdatePLCData, 1000);
 });
-
-
-
-
 
 function toggleTheme() {
     let body = document.body;

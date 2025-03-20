@@ -23,23 +23,33 @@
     <nav class="navbar navbar-dark p-3">
         <div class="container d-flex justify-content-between">
             <div>
-                <img class="logo-img" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+                <img class="logo-img" src="{{ url_for('static', filename='images/logo-color.png') }}" alt="Logo">
                 <a class="navbar-brand text-white fw-bold" href="#"><i class="fas fa-chart-bar"></i> OEE Dashboard</a>
             </div>
-
-            <div>
-                <span id="plcStatus" class="fw-bold">Checking...</span>
-                <span class="theme-toggle text-white ms-3" onclick="toggleTheme()">
+            <div class="sub-menu d-flex align-items-stretch gap-2">
+                <div id="plcStatus" class="theme-toggle fw-bold d-flex align-items-center justify-content-center px-3 py-2 flex-fill custom-height">
+                    Checking...
+                </div>
+            
+                <div class="theme-toggle text-white d-flex align-items-center justify-content-center px-3 py-2 flex-fill custom-height"
+                    onclick="toggleTheme()">
                     <i id="themeIcon" class="fas fa-moon"></i>
-                </span>
-
+                </div>
+            
                 {% if full_name %}
-                <span class="text-white ms-3"><strong>User:</strong> {{ full_name
-                    }}</span>
-                <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm ms-3">Logout</a>
+                <div class="theme-toggle text-white d-flex align-items-center justify-content-center px-3 py-2 flex-fill custom-height">
+                    <i class="fas fa-user"></i> 
+                    <span class="ms-2">{{ full_name }}</span> <!-- Space added using margin -->
+                </div>
+            
+                <div class="d-flex flex-fill custom-height custom-width">
+                    <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm d-flex align-items-center justify-content-center w-100 custom-height">
+                        Logout
+                    </a>
+                </div>
                 {% endif %}
-
             </div>
+                                   
         </div>
     </nav>
     <!-- Loader -->
@@ -49,7 +59,7 @@
 
     <!-- Batch Name -->
     <div class="section-sub-title">
-        <span class="sub-title">Batch Name:</span> <span class="sub-title"> DummyBatch </span>
+        <span class="sub-title">TIN Bottle Sorting Line</span>
     </div>
 
     <!-- Live Production -->

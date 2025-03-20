@@ -1,10 +1,13 @@
+from flask import Flask, jsonify
 from plc import connect_plc
 from snap7.util import get_real, get_int
+
+app = Flask(__name__)
 
 def fetch_plc_data():
     plc = connect_plc()
     if not plc or not plc.get_connected():
-        print("❌ PLC Not Connected")
+        print("PLC Not Connected")
         return {"plc_status": False}
 
     try:
@@ -16,7 +19,7 @@ def fetch_plc_data():
         print(f"✅ Data Read from PLC: {raw_data}")
 
         if not raw_data:
-            print("❌ No Data Received from PLC")
+            print("No Data Received from PLC")
             return {"plc_status": False}
 
         communicate = get_int(raw_data, 0)
@@ -26,7 +29,7 @@ def fetch_plc_data():
         produced = get_int(raw_data, 14)
         progress = get_int(raw_data, 16)
         rejorquar = get_int(raw_data, 18)
-        op10_status = get_int(raw_data, 20)  # Fixed variable name
+        op10_status = get_int(raw_data, 20)  
         op20_status = get_int(raw_data, 22)  
         op30a_status = get_int(raw_data, 24)  
         op30b_status = get_int(raw_data, 26)  
@@ -53,5 +56,13 @@ def fetch_plc_data():
             "plc_status": True
         }
     except Exception as e:
-        print(f"❌ Error Reading Data from PLC: {e}")
+        print(f"Error Reading Data from PLC: {e}")
         return {"plc_status": False}
+
+@app.route("/get_plc_status", methods=["GET"])
+def get_plc_status():
+    data = fetch_plc_data()
+    return jsonify(data)
+
+if __name__ == "__main__":
+    app.run(debug=True)
